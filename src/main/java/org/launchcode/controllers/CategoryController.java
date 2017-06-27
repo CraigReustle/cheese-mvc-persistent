@@ -1,8 +1,6 @@
 package org.launchcode.controllers;
 
 import org.launchcode.models.Category;
-import org.launchcode.models.Cheese;
-import org.launchcode.models.CheeseType;
 import org.launchcode.models.data.CategoryDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -25,34 +24,29 @@ public class CategoryController {
     private CategoryDao categoryDao;
 
     // Request path: /category
-    @RequestMapping(value = "")
-    public String index(Model model) {
-
+    @RequestMapping(value = "", method=RequestMethod.GET)
+    public String index(Model model, @RequestParam(defaultValue="0") int id){
         model.addAttribute("categories", categoryDao.findAll());
         model.addAttribute("title", "Categories");
-
-        return "category/index";
+        return "category/index"; //html
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
-    public String displayAddCategoryForm(Model model) {
+    public String add(Model model) {
         model.addAttribute("title", "Add Category");
         model.addAttribute(new Category());
-        return "category/add";
+        return "category/add"; //html
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddCategoryForm(@ModelAttribute @Valid Category category,
-                                       Errors errors, Model model) {
+    public String add(Model model, @ModelAttribute @Valid Category category, Errors errors) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Category");
-            return "category/add";
+            return "category/add"; //html
         }
 
         categoryDao.save(category);
         return "redirect:";
     }
-
-
 }
