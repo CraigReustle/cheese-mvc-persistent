@@ -32,10 +32,8 @@ public class CheeseController {
     // Request path: /cheese
     @RequestMapping(value = "")
     public String index(Model model) {
-
         model.addAttribute("cheeses", cheeseDao.findAll());
         model.addAttribute("title", "My Cheeses");
-
         return "cheese/index";
     }
 
@@ -54,14 +52,16 @@ public class CheeseController {
             @RequestParam int categoryId,
             Model model) {
 
+        Category cat = categoryDao.findOne(categoryId);
+        newCheese.setCategory(cat);
+
         if (errors.hasErrors()) {
+            model.addAttribute(newCheese);
             model.addAttribute("title", "Add Cheese");
             model.addAttribute("categories", categoryDao.findAll());
             return "cheese/add";
         }
 
-        Category cat = categoryDao.findOne(categoryId);
-        newCheese.setCategory(cat);
         cheeseDao.save(newCheese);
         return "redirect:";
     }
@@ -84,11 +84,11 @@ public class CheeseController {
     }
 
     @RequestMapping(value="category",method = RequestMethod.GET)
-    public String categoroy(Model model,@RequestParam int id){
-        Category cat =categoryDao.findOne(id);
+    public String category(Model model,@RequestParam int id){
+        Category cat = categoryDao.findOne(id);
         List<Cheese> cheeses = cat.getCheeses();
         model.addAttribute("cheeses", cheeses);
-        model.addAttribute("title", "Cheeses in category: " +cat.getName());
+        model.addAttribute("title", "Cheeses in category: " + cat.getName());
         return "cheese/index";
     }
 
