@@ -10,10 +10,8 @@
 
 <p th:unless="${cheeses.size()}"><i>No cheeses yet</i></p>
 
-<ul>
-    <li th:each="cheese : ${cheeses}">
-        <a th:href="'/menu/view/' + ${cheese.id}" th:text="${cheese.name}"></a>
-    </li>
+<ul th:each="cheese : ${cheeses}">
+    <li th:text="${cheese.name}"></li>
 </ul>
 
 <p><a th:href="'/menu/add-item/' + ${menuId}">Add Cheese</a></p>
