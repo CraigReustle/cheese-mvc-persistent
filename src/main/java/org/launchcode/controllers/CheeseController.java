@@ -34,17 +34,19 @@ public class CheeseController {
     public String index(Model model) {
         model.addAttribute("cheeses", cheeseDao.findAll());
         model.addAttribute("title", "My Cheeses");
-        return "cheese/index";
+        return "cheese/index"; //html
     }
 
+    // Request path: /cheese/add
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddCheeseForm(Model model) {
         model.addAttribute("title", "Add Cheese");
         model.addAttribute(new Cheese());
         model.addAttribute("categories", categoryDao.findAll());
-        return "cheese/add";
+        return "cheese/add"; //html
     }
 
+    // Request path: /cheese/add
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddCheeseForm(
             @ModelAttribute @Valid Cheese newCheese,
@@ -59,20 +61,22 @@ public class CheeseController {
             model.addAttribute(newCheese);
             model.addAttribute("title", "Add Cheese");
             model.addAttribute("categories", categoryDao.findAll());
-            return "cheese/add";
+            return "cheese/add"; //html
         }
 
         cheeseDao.save(newCheese);
         return "redirect:";
     }
 
+    // Request path: /cheese/remove
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     public String displayRemoveCheeseForm(Model model) {
         model.addAttribute("cheeses", cheeseDao.findAll());
         model.addAttribute("title", "Remove Cheese");
-        return "cheese/remove";
+        return "cheese/remove"; //html
     }
 
+    // Request path: /cheese/remove
     @RequestMapping(value = "remove", method = RequestMethod.POST)
     public String processRemoveCheeseForm(@RequestParam int[] cheeseIds) {
 
@@ -89,7 +93,7 @@ public class CheeseController {
         List<Cheese> cheeses = cat.getCheeses();
         model.addAttribute("cheeses", cheeses);
         model.addAttribute("title", "Cheeses in category: " + cat.getName());
-        return "cheese/index";
+        return "cheese/index"; //html
     }
 
 }
